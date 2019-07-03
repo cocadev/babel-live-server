@@ -6,6 +6,19 @@ const site = {
     description: 'Java/Javascript Technology - Spring Framework'
 };
 
+let counter = 0;
+const add = () => {
+    counter++;
+    console.log('add One, counter = ' + counter);
+    renderApp();
+}
+ 
+const minus = () => {
+    counter--;
+    console.log('minus One, counter = ' + counter);
+    renderApp();
+}
+
 function getContent(content) {
     if (content) {
         return <p>{content}</p>
@@ -21,6 +34,12 @@ const renderApp = () => {
         <div>
             <h2>{site.title}</h2>
             <p>{site.description}</p>
+
+            <p>Counter: {counter}</p>
+
+            <button onClick={add}>ADD+</button>
+            <button onClick={minus}>MINUS-</button>
+
             {getContent(site.content)}
         </div>
     );
