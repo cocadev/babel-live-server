@@ -1,19 +1,33 @@
 class NoteApp extends React.Component {
     render() {
+        const jsaTitle = 'Java Sample Approach';
+        const jsaDescription = {
+            'd1': 'Java/JavaScript Technology',
+            'd2': 'Spring Framework'
+        }
+        const jsaNotes = [
+            'Java Core Tutorials',
+            'Spring Integration Applications',
+            'Angular + Spring Boot Tutorials'];
+ 
         return (
             <div>
-                <h2>Java Sample Approach</h2>
-                <Header />
-                <Notes />
+                <Title title={jsaTitle} />
+                <Header description={jsaDescription} />
+                <Notes notes={jsaNotes} />
                 <Action />
             </div>
         );
     }
 }
  
+function Title(props) {
+    return <h2>{props.title}</h2>;
+}
+ 
 class Header extends React.Component {
     render() {
-        return <h4>Java/JavaScript Technology - Spring Framework</h4>;
+        return <h4>{this.props.description.d1} - {this.props.description.d2}</h4>;
     }
 }
  
@@ -23,9 +37,9 @@ class Notes extends React.Component {
             <div>
                 JSA Notes:
                 <ol>
-                    <li><Note/></li>
-                    <li><Note/></li>
-                    <li><Note/></li>
+                    {this.props.notes.map(note =>
+                        <li><Note note={note} /></li>
+                    )}
                 </ol>
             </div>
         );
@@ -36,7 +50,7 @@ class Note extends React.Component {
     render() {
         return (
             <div>
-                This is just a note.
+                {this.props.note}
                 <button style={{ margin: 5 }}>Remove</button>
             </div>
         );

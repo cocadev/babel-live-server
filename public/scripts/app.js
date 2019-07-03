@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -18,18 +18,21 @@ var NoteApp = function (_React$Component) {
     }
 
     _createClass(NoteApp, [{
-        key: "render",
+        key: 'render',
         value: function render() {
+            var jsaTitle = 'Java Sample Approach';
+            var jsaDescription = {
+                'd1': 'Java/JavaScript Technology',
+                'd2': 'Spring Framework'
+            };
+            var jsaNotes = ['Java Core Tutorials', 'Spring Integration Applications', 'Angular + Spring Boot Tutorials'];
+
             return React.createElement(
-                "div",
+                'div',
                 null,
-                React.createElement(
-                    "h2",
-                    null,
-                    "Java Sample Approach"
-                ),
-                React.createElement(Header, null),
-                React.createElement(Notes, null),
+                React.createElement(Title, { title: jsaTitle }),
+                React.createElement(Header, { description: jsaDescription }),
+                React.createElement(Notes, { notes: jsaNotes }),
                 React.createElement(Action, null)
             );
         }
@@ -37,6 +40,14 @@ var NoteApp = function (_React$Component) {
 
     return NoteApp;
 }(React.Component);
+
+function Title(props) {
+    return React.createElement(
+        'h2',
+        null,
+        props.title
+    );
+}
 
 var Header = function (_React$Component2) {
     _inherits(Header, _React$Component2);
@@ -48,12 +59,14 @@ var Header = function (_React$Component2) {
     }
 
     _createClass(Header, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "h4",
+                'h4',
                 null,
-                "Java/JavaScript Technology - Spring Framework"
+                this.props.description.d1,
+                ' - ',
+                this.props.description.d2
             );
         }
     }]);
@@ -71,30 +84,22 @@ var Notes = function (_React$Component3) {
     }
 
     _createClass(Notes, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "div",
+                'div',
                 null,
-                "JSA Notes:",
+                'JSA Notes:',
                 React.createElement(
-                    "ol",
+                    'ol',
                     null,
-                    React.createElement(
-                        "li",
-                        null,
-                        React.createElement(Note, null)
-                    ),
-                    React.createElement(
-                        "li",
-                        null,
-                        React.createElement(Note, null)
-                    ),
-                    React.createElement(
-                        "li",
-                        null,
-                        React.createElement(Note, null)
-                    )
+                    this.props.notes.map(function (note) {
+                        return React.createElement(
+                            'li',
+                            null,
+                            React.createElement(Note, { note: note })
+                        );
+                    })
                 )
             );
         }
@@ -113,16 +118,16 @@ var Note = function (_React$Component4) {
     }
 
     _createClass(Note, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "div",
+                'div',
                 null,
-                "This is just a note.",
+                this.props.note,
                 React.createElement(
-                    "button",
+                    'button',
                     { style: { margin: 5 } },
-                    "Remove"
+                    'Remove'
                 )
             );
         }
@@ -141,26 +146,26 @@ var Action = function (_React$Component5) {
     }
 
     _createClass(Action, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "div",
+                'div',
                 null,
                 React.createElement(
-                    "form",
+                    'form',
                     { onSubmit: submit },
-                    React.createElement("input", { type: "text", name: "data" }),
+                    React.createElement('input', { type: 'text', name: 'data' }),
                     React.createElement(
-                        "button",
+                        'button',
                         null,
-                        "Add"
+                        'Add'
                     )
                 ),
-                React.createElement("br", null),
+                React.createElement('br', null),
                 React.createElement(
-                    "button",
+                    'button',
                     { onClick: removeAll },
-                    "Remove All"
+                    'Remove All'
                 )
             );
         }
