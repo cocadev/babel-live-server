@@ -21,6 +21,28 @@ var minus = function minus() {
     renderApp();
 };
 
+var app = {
+    title: 'Java Sample Approach',
+    categories: []
+};
+
+var removeAll = function removeAll() {
+    app.categories = [];
+    renderApp();
+};
+
+var submit = function submit(e) {
+    e.preventDefault();
+
+    var data = e.target.elements.data.value;
+    if (data) {
+        console.log(data);
+        app.categories.push(data);
+        e.target.elements.data.value = '';
+        renderApp();
+    }
+};
+
 function getContent(content) {
     if (content) {
         return React.createElement(
@@ -52,6 +74,43 @@ var renderApp = function renderApp() {
             'p',
             null,
             site.description
+        ),
+        React.createElement(
+            'h2',
+            null,
+            app.title
+        ),
+        React.createElement(
+            'p',
+            null,
+            app.categories.length > 0 ? 'Categories:' : 'No category!'
+        ),
+        React.createElement(
+            'ol',
+            null,
+            app.categories.map(function (category) {
+                return React.createElement(
+                    'li',
+                    { key: category },
+                    category
+                );
+            })
+        ),
+        React.createElement(
+            'form',
+            { onSubmit: submit },
+            React.createElement('input', { type: 'text', name: 'data' }),
+            React.createElement(
+                'button',
+                null,
+                'Add'
+            )
+        ),
+        React.createElement('br', null),
+        React.createElement(
+            'button',
+            { onClick: removeAll },
+            'Remove All'
         ),
         React.createElement(
             'p',

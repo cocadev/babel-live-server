@@ -12,12 +12,39 @@ const add = () => {
     console.log('add One, counter = ' + counter);
     renderApp();
 }
- 
+
 const minus = () => {
     counter--;
     console.log('minus One, counter = ' + counter);
     renderApp();
 }
+
+
+
+const app = {
+    title: 'Java Sample Approach',
+    categories: []
+}
+
+const removeAll = () => {
+    app.categories = [];
+    renderApp();
+}
+
+const submit = (e) => {
+    e.preventDefault();
+
+    const data = e.target.elements.data.value;
+    if (data) {
+        console.log(data);
+        app.categories.push(data);
+        e.target.elements.data.value = '';
+        renderApp();
+    }
+}
+
+
+
 
 function getContent(content) {
     if (content) {
@@ -34,6 +61,25 @@ const renderApp = () => {
         <div>
             <h2>{site.title}</h2>
             <p>{site.description}</p>
+
+            <h2>{app.title}</h2>
+            <p>{app.categories.length > 0 ? 'Categories:' : 'No category!'}</p>
+
+            <ol>
+                {
+                    app.categories.map((category) =>
+                        <li key={category}>{category}</li>
+                    )
+                }
+            </ol>
+
+            <form onSubmit={submit}>
+                <input type="text" name="data" />
+                <button>Add</button>
+            </form>
+
+            <br />
+            <button onClick={removeAll}>Remove All</button>
 
             <p>Counter: {counter}</p>
 
