@@ -13,3 +13,5 @@
     babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
 6. Install Project
     live-server public
+
+<img src="screenshots/react-component-lifecycle-methods-diagram.png" width="50%" />

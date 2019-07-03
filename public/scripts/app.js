@@ -8,238 +8,169 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var NoteApp = function (_React$Component) {
-    _inherits(NoteApp, _React$Component);
+var maxCount = 3;
 
-    function NoteApp(props) {
-        _classCallCheck(this, NoteApp);
+var Counter = function (_React$Component) {
+    _inherits(Counter, _React$Component);
 
-        var _this = _possibleConstructorReturn(this, (NoteApp.__proto__ || Object.getPrototypeOf(NoteApp)).call(this, props));
+    function Counter(props) {
+        _classCallCheck(this, Counter);
 
-        _this.appRemoveAll = _this.appRemoveAll.bind(_this);
-        _this.appAddNote = _this.appAddNote.bind(_this);
-        _this.appDeleteNote = _this.appDeleteNote.bind(_this);
+        var _this = _possibleConstructorReturn(this, (Counter.__proto__ || Object.getPrototypeOf(Counter)).call(this, props));
+
+        console.log('>contructor()');
+
+        _this.add = _this.add.bind(_this);
+        _this.minus = _this.minus.bind(_this);
 
         _this.state = {
-            jsaNotes: ['Java Core Tutorials', 'Spring Integration Applications', 'Angular + Spring Boot Tutorials']
+            counter: 0
         };
         return _this;
     }
 
-    _createClass(NoteApp, [{
-        key: 'appRemoveAll',
-        value: function appRemoveAll() {
-            console.log("Removing All Notes...");
-            this.setState(function () {
+    _createClass(Counter, [{
+        key: 'add',
+        value: function add() {
+            this.setState(function (prevState) {
+                console.log('>>add One, counter=' + (prevState.counter + 1));
                 return {
-                    jsaNotes: []
+                    counter: prevState.counter + 1
                 };
             });
         }
     }, {
-        key: 'appAddNote',
-        value: function appAddNote(note) {
-            if (!note) {
-                console.log('Note should not be blank!');
-            } else if (this.state.jsaNotes.indexOf(note) > -1) {
-                console.log('Note alreaday exists, add another Note!');
-            } else {
-                this.setState(function (prevState) {
-                    return {
-                        jsaNotes: prevState.jsaNotes.concat([note])
-                    };
+        key: 'minus',
+        value: function minus() {
+            this.setState(function (prevState) {
+                console.log('>>minus One, counter=' + (prevState.counter - 1));
+                return {
+                    counter: prevState.counter - 1
+                };
+            });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var strCount = localStorage.getItem('counter');
+            console.log('>componentDidMount(): load saved data >> counter=' + strCount);
+
+            var counter = Number.parseInt(strCount, 10);
+
+            if (!isNaN(counter)) {
+                if (counter > this.props.maxCount) {
+                    counter = this.props.maxCount;
+                    console.log('Counter is bigger than MaxCount => descrease it to ' + counter);
+                }
+                this.setState(function () {
+                    return { counter: counter };
                 });
             }
         }
     }, {
-        key: 'appDeleteNote',
-        value: function appDeleteNote(note) {
-            console.log('Deleting Note...');
-            this.setState(function (prevState) {
-                console.log('Deleting Note: ' + note + ' at index: ' + prevState.jsaNotes.indexOf(note));
-                prevState.jsaNotes.splice(prevState.jsaNotes.indexOf(note), 1);
-                return {
-                    jsaNotes: prevState.jsaNotes
-                };
-            });
+        key: 'shouldComponentUpdate',
+        value: function shouldComponentUpdate(nextProps, nextState) {
+            console.log('>shouldComponentUpdate()' + ' --nextProps=' + nextProps.maxCount + ' --nextState=' + nextState.counter);
+
+            if (nextState.counter > nextProps.maxCount) {
+                console.log('counter[' + nextState.counter + '] > maxCount[' + nextProps.maxCount + '] => not update component!');
+                return false;
+            }
+
+            console.log('update component!');
+            return true;
+        }
+    }, {
+        key: 'getSnapshotBeforeUpdate',
+        value: function getSnapshotBeforeUpdate(prevProps, prevState) {
+            console.log('>getSnapshotBeforeUpdate()' + ' --prevProps=' + prevProps.maxCount + ' --prevState=' + prevState.counter);
+
+            return '[maxCount= ' + prevProps.maxCount + ' & counter= ' + prevState.counter + ']';
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState, snapshot) {
+            console.log('>componentDidUpdate()' + ' --prevProps=' + prevProps.maxCount + ' --prevState=' + prevState.counter + ' --snapshot=' + snapshot);
+
+            if (prevState.counter !== this.state.counter) {
+                console.log('save counter value[' + this.state.counter + '] to storage.');
+                localStorage.setItem('counter', this.state.counter);
+            }
+
+            console.log('------------------------------');
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.log('>componentWillUnmount()');
         }
     }, {
         key: 'render',
         value: function render() {
-            var jsaTitle = 'Java Sample Approach';
-            var jsaDescription = 'Java/JavaScript Technology - Spring Framework';
+            console.log('>render()');
 
-            return React.createElement(
-                'div',
-                null,
-                React.createElement(Header, { title: jsaTitle, description: jsaDescription }),
-                React.createElement(Notes, {
-                    notes: this.state.jsaNotes,
-                    deleteNote: this.appDeleteNote }),
-                React.createElement(Action, {
-                    removeAll: this.appRemoveAll,
-                    addNote: this.appAddNote })
-            );
-        }
-    }]);
-
-    return NoteApp;
-}(React.Component);
-
-var Header = function (_React$Component2) {
-    _inherits(Header, _React$Component2);
-
-    function Header() {
-        _classCallCheck(this, Header);
-
-        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
-    }
-
-    _createClass(Header, [{
-        key: 'render',
-        value: function render() {
             return React.createElement(
                 'div',
                 null,
                 React.createElement(
-                    'h2',
+                    'h1',
                     null,
-                    this.props.title
+                    'Java Sample Approach'
                 ),
                 React.createElement(
-                    'h4',
+                    'h3',
                     null,
-                    this.props.description
-                )
-            );
-        }
-    }]);
-
-    return Header;
-}(React.Component);
-
-var Notes = function (_React$Component3) {
-    _inherits(Notes, _React$Component3);
-
-    function Notes() {
-        _classCallCheck(this, Notes);
-
-        return _possibleConstructorReturn(this, (Notes.__proto__ || Object.getPrototypeOf(Notes)).apply(this, arguments));
-    }
-
-    _createClass(Notes, [{
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
-
-            return React.createElement(
-                'div',
-                null,
-                'JSA Notes:',
+                    'MaxCount: ',
+                    this.props.maxCount
+                ),
                 React.createElement(
-                    'ol',
+                    'p',
                     null,
-                    this.props.notes.map(function (note) {
-                        return React.createElement(
-                            'li',
-                            { key: note },
-                            React.createElement(Note, {
-                                note: note,
-                                deleteNote: _this4.props.deleteNote })
-                        );
-                    })
-                )
-            );
-        }
-    }]);
-
-    return Notes;
-}(React.Component);
-
-var Note = function (_React$Component4) {
-    _inherits(Note, _React$Component4);
-
-    function Note(props) {
-        _classCallCheck(this, Note);
-
-        var _this5 = _possibleConstructorReturn(this, (Note.__proto__ || Object.getPrototypeOf(Note)).call(this, props));
-
-        _this5.deleteData = _this5.deleteData.bind(_this5);
-        return _this5;
-    }
-
-    _createClass(Note, [{
-        key: 'deleteData',
-        value: function deleteData() {
-            this.props.deleteNote(this.props.note);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'div',
-                null,
-                this.props.note,
+                    'Counter: ',
+                    this.state.counter
+                ),
                 React.createElement(
                     'button',
-                    { onClick: this.deleteData, style: { margin: 5 } },
-                    'Remove'
-                )
-            );
-        }
-    }]);
-
-    return Note;
-}(React.Component);
-
-var Action = function (_React$Component5) {
-    _inherits(Action, _React$Component5);
-
-    function Action(props) {
-        _classCallCheck(this, Action);
-
-        var _this6 = _possibleConstructorReturn(this, (Action.__proto__ || Object.getPrototypeOf(Action)).call(this, props));
-
-        _this6.addData = _this6.addData.bind(_this6);
-        return _this6;
-    }
-
-    _createClass(Action, [{
-        key: 'addData',
-        value: function addData(e) {
-            e.preventDefault();
-            console.log('Adding new Note...');
-
-            var note = e.target.elements.data.value;
-            this.props.addNote(note);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    'form',
-                    { onSubmit: this.addData },
-                    React.createElement('input', { type: 'text', name: 'data' }),
-                    React.createElement(
-                        'button',
-                        null,
-                        'Add'
-                    )
+                    { onClick: this.add },
+                    'ADD+'
                 ),
+                React.createElement(
+                    'button',
+                    { onClick: this.minus },
+                    'MINUS-'
+                ),
+                React.createElement('br', null),
                 React.createElement('br', null),
                 React.createElement(
                     'button',
-                    { onClick: this.props.removeAll },
-                    'Remove All'
+                    { onClick: _render },
+                    'update MaxCount'
                 )
             );
         }
+    }], [{
+        key: 'getDerivedStateFromProps',
+        value: function getDerivedStateFromProps(nextProps, prevState) {
+            console.log('>getDerivedStateFromProps()' + ' --nextProps=' + nextProps.maxCount + ' --prevState=' + prevState.counter);
+
+            if (prevState.counter > nextProps.maxCount) {
+                console.log('counter[' + prevState.counter + '] > new maxCount[' + nextProps.maxCount + '] => set counter to [' + nextProps.maxCount + ']');
+                return {
+                    counter: nextProps.maxCount
+                };
+            }
+
+            console.log('check MAX counter >> no need to change counter!');
+            return null;
+        }
     }]);
 
-    return Action;
+    return Counter;
 }(React.Component);
 
-ReactDOM.render(React.createElement(NoteApp, null), document.getElementById('app'));
+var _render = function _render() {
+    maxCount = maxCount + 1;
+    ReactDOM.render(React.createElement(Counter, { maxCount: maxCount }), document.getElementById('app'));
+};
+
+ReactDOM.render(React.createElement(Counter, { maxCount: maxCount }), document.getElementById('app'));
