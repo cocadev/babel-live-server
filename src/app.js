@@ -1,95 +1,65 @@
-console.log('grokonez.com');
-
-// JSX
-const site = {
-    title: 'Java Sample Approach',
-    description: 'Java/Javascript Technology - Spring Framework'
-};
-
-let counter = 0;
-const add = () => {
-    counter++;
-    console.log('add One, counter = ' + counter);
-    renderApp();
-}
-
-const minus = () => {
-    counter--;
-    console.log('minus One, counter = ' + counter);
-    renderApp();
-}
-
-
-
-const app = {
-    title: 'Java Sample Approach',
-    categories: []
-}
-
-const removeAll = () => {
-    app.categories = [];
-    renderApp();
-}
-
-const submit = (e) => {
-    e.preventDefault();
-
-    const data = e.target.elements.data.value;
-    if (data) {
-        console.log(data);
-        app.categories.push(data);
-        e.target.elements.data.value = '';
-        renderApp();
+class NoteApp extends React.Component {
+    render() {
+        return (
+            <div>
+                <h2>Java Sample Approach</h2>
+                <Header />
+                <Notes />
+                <Action />
+            </div>
+        );
     }
 }
-
-
-
-
-function getContent(content) {
-    if (content) {
-        return <p>{content}</p>
-    } else {
-        return <p>[Wang Harry Construction...]</p>
+ 
+class Header extends React.Component {
+    render() {
+        return <h4>Java/JavaScript Technology - Spring Framework</h4>;
     }
 }
-
-const appRoot = document.getElementById('app');
-
-const renderApp = () => {
-    const template = (
-        <div>
-            <h2>{site.title}</h2>
-            <p>{site.description}</p>
-
-            <h2>{app.title}</h2>
-            <p>{app.categories.length > 0 ? 'Categories:' : 'No category!'}</p>
-
-            <ol>
-                {
-                    app.categories.map((category) =>
-                        <li key={category}>{category}</li>
-                    )
-                }
-            </ol>
-
-            <form onSubmit={submit}>
-                <input type="text" name="data" />
-                <button>Add</button>
-            </form>
-
-            <br />
-            <button onClick={removeAll}>Remove All</button>
-
-            <p>Counter: {counter}</p>
-
-            <button onClick={add}>ADD+</button>
-            <button onClick={minus}>MINUS-</button>
-
-            {getContent(site.content)}
-        </div>
-    );
-    ReactDOM.render(template, appRoot);
+ 
+class Notes extends React.Component {
+    render() {
+        return (
+            <div>
+                JSA Notes:
+                <ol>
+                    <li><Note/></li>
+                    <li><Note/></li>
+                    <li><Note/></li>
+                </ol>
+            </div>
+        );
+    }
 }
-
-renderApp();
+ 
+class Note extends React.Component {
+    render() {
+        return (
+            <div>
+                This is just a note.
+                <button style={{ margin: 5 }}>Remove</button>
+            </div>
+        );
+    }
+}
+ 
+class Action extends React.Component {
+    render() {
+        return (
+            <div>
+                <form onSubmit={submit}>
+                    <input type="text" name="data" />
+                    <button>Add</button>
+                </form>
+ 
+                <br />
+                <button onClick={removeAll}>Remove All</button>
+            </div>
+        );
+    }
+}
+ 
+const submit = () => { }
+const removeAll = () => { }
+ 
+ReactDOM.render(<NoteApp />, document.getElementById('app'));

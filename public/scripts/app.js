@@ -1,136 +1,175 @@
-'use strict';
+"use strict";
 
-console.log('grokonez.com');
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-// JSX
-var site = {
-    title: 'Java Sample Approach',
-    description: 'Java/Javascript Technology - Spring Framework'
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var counter = 0;
-var add = function add() {
-    counter++;
-    console.log('add One, counter = ' + counter);
-    renderApp();
-};
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-var minus = function minus() {
-    counter--;
-    console.log('minus One, counter = ' + counter);
-    renderApp();
-};
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var app = {
-    title: 'Java Sample Approach',
-    categories: []
-};
+var NoteApp = function (_React$Component) {
+    _inherits(NoteApp, _React$Component);
 
-var removeAll = function removeAll() {
-    app.categories = [];
-    renderApp();
-};
+    function NoteApp() {
+        _classCallCheck(this, NoteApp);
 
-var submit = function submit(e) {
-    e.preventDefault();
-
-    var data = e.target.elements.data.value;
-    if (data) {
-        console.log(data);
-        app.categories.push(data);
-        e.target.elements.data.value = '';
-        renderApp();
+        return _possibleConstructorReturn(this, (NoteApp.__proto__ || Object.getPrototypeOf(NoteApp)).apply(this, arguments));
     }
-};
 
-function getContent(content) {
-    if (content) {
-        return React.createElement(
-            'p',
-            null,
-            content
-        );
-    } else {
-        return React.createElement(
-            'p',
-            null,
-            '[Wang Harry Construction...]'
-        );
-    }
-}
-
-var appRoot = document.getElementById('app');
-
-var renderApp = function renderApp() {
-    var template = React.createElement(
-        'div',
-        null,
-        React.createElement(
-            'h2',
-            null,
-            site.title
-        ),
-        React.createElement(
-            'p',
-            null,
-            site.description
-        ),
-        React.createElement(
-            'h2',
-            null,
-            app.title
-        ),
-        React.createElement(
-            'p',
-            null,
-            app.categories.length > 0 ? 'Categories:' : 'No category!'
-        ),
-        React.createElement(
-            'ol',
-            null,
-            app.categories.map(function (category) {
-                return React.createElement(
-                    'li',
-                    { key: category },
-                    category
-                );
-            })
-        ),
-        React.createElement(
-            'form',
-            { onSubmit: submit },
-            React.createElement('input', { type: 'text', name: 'data' }),
-            React.createElement(
-                'button',
+    _createClass(NoteApp, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
                 null,
-                'Add'
-            )
-        ),
-        React.createElement('br', null),
-        React.createElement(
-            'button',
-            { onClick: removeAll },
-            'Remove All'
-        ),
-        React.createElement(
-            'p',
-            null,
-            'Counter: ',
-            counter
-        ),
-        React.createElement(
-            'button',
-            { onClick: add },
-            'ADD+'
-        ),
-        React.createElement(
-            'button',
-            { onClick: minus },
-            'MINUS-'
-        ),
-        getContent(site.content)
-    );
-    ReactDOM.render(template, appRoot);
-};
+                React.createElement(
+                    "h2",
+                    null,
+                    "Java Sample Approach"
+                ),
+                React.createElement(Header, null),
+                React.createElement(Notes, null),
+                React.createElement(Action, null)
+            );
+        }
+    }]);
 
-renderApp();
+    return NoteApp;
+}(React.Component);
+
+var Header = function (_React$Component2) {
+    _inherits(Header, _React$Component2);
+
+    function Header() {
+        _classCallCheck(this, Header);
+
+        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+    }
+
+    _createClass(Header, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "h4",
+                null,
+                "Java/JavaScript Technology - Spring Framework"
+            );
+        }
+    }]);
+
+    return Header;
+}(React.Component);
+
+var Notes = function (_React$Component3) {
+    _inherits(Notes, _React$Component3);
+
+    function Notes() {
+        _classCallCheck(this, Notes);
+
+        return _possibleConstructorReturn(this, (Notes.__proto__ || Object.getPrototypeOf(Notes)).apply(this, arguments));
+    }
+
+    _createClass(Notes, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                null,
+                "JSA Notes:",
+                React.createElement(
+                    "ol",
+                    null,
+                    React.createElement(
+                        "li",
+                        null,
+                        React.createElement(Note, null)
+                    ),
+                    React.createElement(
+                        "li",
+                        null,
+                        React.createElement(Note, null)
+                    ),
+                    React.createElement(
+                        "li",
+                        null,
+                        React.createElement(Note, null)
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Notes;
+}(React.Component);
+
+var Note = function (_React$Component4) {
+    _inherits(Note, _React$Component4);
+
+    function Note() {
+        _classCallCheck(this, Note);
+
+        return _possibleConstructorReturn(this, (Note.__proto__ || Object.getPrototypeOf(Note)).apply(this, arguments));
+    }
+
+    _createClass(Note, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                null,
+                "This is just a note.",
+                React.createElement(
+                    "button",
+                    { style: { margin: 5 } },
+                    "Remove"
+                )
+            );
+        }
+    }]);
+
+    return Note;
+}(React.Component);
+
+var Action = function (_React$Component5) {
+    _inherits(Action, _React$Component5);
+
+    function Action() {
+        _classCallCheck(this, Action);
+
+        return _possibleConstructorReturn(this, (Action.__proto__ || Object.getPrototypeOf(Action)).apply(this, arguments));
+    }
+
+    _createClass(Action, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                null,
+                React.createElement(
+                    "form",
+                    { onSubmit: submit },
+                    React.createElement("input", { type: "text", name: "data" }),
+                    React.createElement(
+                        "button",
+                        null,
+                        "Add"
+                    )
+                ),
+                React.createElement("br", null),
+                React.createElement(
+                    "button",
+                    { onClick: removeAll },
+                    "Remove All"
+                )
+            );
+        }
+    }]);
+
+    return Action;
+}(React.Component);
+
+var submit = function submit() {};
+var removeAll = function removeAll() {};
+
+ReactDOM.render(React.createElement(NoteApp, null), document.getElementById('app'));
