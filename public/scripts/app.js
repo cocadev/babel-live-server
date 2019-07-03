@@ -11,43 +11,80 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var NoteApp = function (_React$Component) {
     _inherits(NoteApp, _React$Component);
 
-    function NoteApp() {
+    function NoteApp(props) {
         _classCallCheck(this, NoteApp);
 
-        return _possibleConstructorReturn(this, (NoteApp.__proto__ || Object.getPrototypeOf(NoteApp)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (NoteApp.__proto__ || Object.getPrototypeOf(NoteApp)).call(this, props));
+
+        _this.appRemoveAll = _this.appRemoveAll.bind(_this);
+        _this.appAddNote = _this.appAddNote.bind(_this);
+        _this.appDeleteNote = _this.appDeleteNote.bind(_this);
+
+        _this.state = {
+            jsaNotes: ['Java Core Tutorials', 'Spring Integration Applications', 'Angular + Spring Boot Tutorials']
+        };
+        return _this;
     }
 
     _createClass(NoteApp, [{
+        key: 'appRemoveAll',
+        value: function appRemoveAll() {
+            console.log("Removing All Notes...");
+            this.setState(function () {
+                return {
+                    jsaNotes: []
+                };
+            });
+        }
+    }, {
+        key: 'appAddNote',
+        value: function appAddNote(note) {
+            if (!note) {
+                console.log('Note should not be blank!');
+            } else if (this.state.jsaNotes.indexOf(note) > -1) {
+                console.log('Note alreaday exists, add another Note!');
+            } else {
+                this.setState(function (prevState) {
+                    return {
+                        jsaNotes: prevState.jsaNotes.concat([note])
+                    };
+                });
+            }
+        }
+    }, {
+        key: 'appDeleteNote',
+        value: function appDeleteNote(note) {
+            console.log('Deleting Note...');
+            this.setState(function (prevState) {
+                console.log('Deleting Note: ' + note + ' at index: ' + prevState.jsaNotes.indexOf(note));
+                prevState.jsaNotes.splice(prevState.jsaNotes.indexOf(note), 1);
+                return {
+                    jsaNotes: prevState.jsaNotes
+                };
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var jsaTitle = 'Java Sample Approach';
-            var jsaDescription = {
-                'd1': 'Java/JavaScript Technology',
-                'd2': 'Spring Framework'
-            };
-            var jsaNotes = ['Java Core Tutorials', 'Spring Integration Applications', 'Angular + Spring Boot Tutorials'];
+            var jsaDescription = 'Java/JavaScript Technology - Spring Framework';
 
             return React.createElement(
                 'div',
                 null,
-                React.createElement(Title, { title: jsaTitle }),
-                React.createElement(Header, { description: jsaDescription }),
-                React.createElement(Notes, { notes: jsaNotes }),
-                React.createElement(Action, null)
+                React.createElement(Header, { title: jsaTitle, description: jsaDescription }),
+                React.createElement(Notes, {
+                    notes: this.state.jsaNotes,
+                    deleteNote: this.appDeleteNote }),
+                React.createElement(Action, {
+                    removeAll: this.appRemoveAll,
+                    addNote: this.appAddNote })
             );
         }
     }]);
 
     return NoteApp;
 }(React.Component);
-
-function Title(props) {
-    return React.createElement(
-        'h2',
-        null,
-        props.title
-    );
-}
 
 var Header = function (_React$Component2) {
     _inherits(Header, _React$Component2);
@@ -62,11 +99,18 @@ var Header = function (_React$Component2) {
         key: 'render',
         value: function render() {
             return React.createElement(
-                'h4',
+                'div',
                 null,
-                this.props.description.d1,
-                ' - ',
-                this.props.description.d2
+                React.createElement(
+                    'h2',
+                    null,
+                    this.props.title
+                ),
+                React.createElement(
+                    'h4',
+                    null,
+                    this.props.description
+                )
             );
         }
     }]);
@@ -86,6 +130,8 @@ var Notes = function (_React$Component3) {
     _createClass(Notes, [{
         key: 'render',
         value: function render() {
+            var _this4 = this;
+
             return React.createElement(
                 'div',
                 null,
@@ -96,8 +142,10 @@ var Notes = function (_React$Component3) {
                     this.props.notes.map(function (note) {
                         return React.createElement(
                             'li',
-                            null,
-                            React.createElement(Note, { note: note })
+                            { key: note },
+                            React.createElement(Note, {
+                                note: note,
+                                deleteNote: _this4.props.deleteNote })
                         );
                     })
                 )
@@ -111,13 +159,21 @@ var Notes = function (_React$Component3) {
 var Note = function (_React$Component4) {
     _inherits(Note, _React$Component4);
 
-    function Note() {
+    function Note(props) {
         _classCallCheck(this, Note);
 
-        return _possibleConstructorReturn(this, (Note.__proto__ || Object.getPrototypeOf(Note)).apply(this, arguments));
+        var _this5 = _possibleConstructorReturn(this, (Note.__proto__ || Object.getPrototypeOf(Note)).call(this, props));
+
+        _this5.deleteData = _this5.deleteData.bind(_this5);
+        return _this5;
     }
 
     _createClass(Note, [{
+        key: 'deleteData',
+        value: function deleteData() {
+            this.props.deleteNote(this.props.note);
+        }
+    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
@@ -126,7 +182,7 @@ var Note = function (_React$Component4) {
                 this.props.note,
                 React.createElement(
                     'button',
-                    { style: { margin: 5 } },
+                    { onClick: this.deleteData, style: { margin: 5 } },
                     'Remove'
                 )
             );
@@ -139,13 +195,25 @@ var Note = function (_React$Component4) {
 var Action = function (_React$Component5) {
     _inherits(Action, _React$Component5);
 
-    function Action() {
+    function Action(props) {
         _classCallCheck(this, Action);
 
-        return _possibleConstructorReturn(this, (Action.__proto__ || Object.getPrototypeOf(Action)).apply(this, arguments));
+        var _this6 = _possibleConstructorReturn(this, (Action.__proto__ || Object.getPrototypeOf(Action)).call(this, props));
+
+        _this6.addData = _this6.addData.bind(_this6);
+        return _this6;
     }
 
     _createClass(Action, [{
+        key: 'addData',
+        value: function addData(e) {
+            e.preventDefault();
+            console.log('Adding new Note...');
+
+            var note = e.target.elements.data.value;
+            this.props.addNote(note);
+        }
+    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
@@ -153,7 +221,7 @@ var Action = function (_React$Component5) {
                 null,
                 React.createElement(
                     'form',
-                    { onSubmit: submit },
+                    { onSubmit: this.addData },
                     React.createElement('input', { type: 'text', name: 'data' }),
                     React.createElement(
                         'button',
@@ -164,7 +232,7 @@ var Action = function (_React$Component5) {
                 React.createElement('br', null),
                 React.createElement(
                     'button',
-                    { onClick: removeAll },
+                    { onClick: this.props.removeAll },
                     'Remove All'
                 )
             );
@@ -173,8 +241,5 @@ var Action = function (_React$Component5) {
 
     return Action;
 }(React.Component);
-
-var submit = function submit() {};
-var removeAll = function removeAll() {};
 
 ReactDOM.render(React.createElement(NoteApp, null), document.getElementById('app'));
