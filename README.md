@@ -1,5 +1,4 @@
-# Technology Stack with Eugene
-
+# Technology Stack
 
 1. Install Node.js
 2. Install Yarn
